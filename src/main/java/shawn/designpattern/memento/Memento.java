@@ -1,10 +1,10 @@
 package shawn.designpattern.memento;
 
-public interface Memento<T> {
+public interface Memento {
 
     /**
      *
      * @return
      */
-    public T getState();
+    EditorOriginator getState();
 }

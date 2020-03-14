@@ -5,23 +5,26 @@ import java.util.LinkedList;
 
 public class EditorCaretaker {
     private EditorOriginator editorOriginator;
-    private Deque<Memento<EditorOriginator>> history;
+    private Deque<Memento> history;
 
     public EditorCaretaker() {
         editorOriginator = new EditorOriginator();
         history = new LinkedList<>();
     }
 
+    public void addContent(String something) {
+        editorOriginator.write(something + "\n");
+    }
     public void addAndSaveContent(String something) {
         editorOriginator.write(something + "\n");
-        this.pushHistory(editorOriginator.createMemento());
+        pushHistory(editorOriginator.createMemento());
     }
 
-    public void pushHistory(Memento<EditorOriginator> memento) {
+    public void pushHistory(Memento memento) {
         history.push(memento);
     }
 
-    public Memento<EditorOriginator> undo() {
+    public Memento undo() {
         System.out.println("-> 이전 상태로 원복");
         return history.pop();
     }
@@ -32,11 +35,10 @@ public class EditorCaretaker {
         caretaker.addAndSaveContent("상태 1");
         caretaker.addAndSaveContent("상태 2");
         caretaker.addAndSaveContent("상태 3");
-        caretaker.editorOriginator.write("저장되지 않은 컨텐츠");
+        caretaker.addContent("저장되지 않은 컨텐츠");
         caretaker.editorOriginator.viewContent();
 
         caretaker.editorOriginator.restoreFrom(caretaker.undo());
         caretaker.editorOriginator.viewContent();
-
     }
 }

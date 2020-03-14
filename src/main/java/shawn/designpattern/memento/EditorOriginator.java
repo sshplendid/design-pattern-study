@@ -18,17 +18,16 @@ public class EditorOriginator {
      * 메멘토(스냅샷)을 생성한다.
      * @return 현재 상태의 메멘토 객체
      */
-    public Memento<EditorOriginator> createMemento() {
+    public Memento createMemento() {
         System.out.println("create a snapshot.");
-
-        return new EditorMemento<>(new EditorOriginator(LocalDateTime.now(), this.content));
+        return new EditorMemento(LocalDateTime.now(), this.content);
     }
 
     /**
      * 메멘토(스냅샷)을 인자로 받아 이전 상태로 복구한다.
      * @param memento 복구하려는 메멘토 객체
      */
-    public void restoreFrom(Memento<EditorOriginator> memento) {
+    public void restoreFrom(Memento memento) {
         this.savedDateTime = memento.getState().savedDateTime;
         this.content = memento.getState().content;
 
@@ -45,19 +44,18 @@ public class EditorOriginator {
         System.out.println("===content: END===");
     }
 
-    private class EditorMemento<T> implements Memento {
+    private class EditorMemento implements Memento {
 
-//        private LocalDateTime savedDateTime;
-//        private String content;
-        private T originator;
+        private LocalDateTime savedDateTime;
+        private String content;
 
-        public EditorMemento(T originator) {
-            this.originator = originator;
+        private EditorMemento(LocalDateTime savedDateTime, String content) {
+            this.savedDateTime = savedDateTime;
+            this.content = content;
         }
 
-        @Override
-        public T getState() {
-            return this.originator;
+        public EditorOriginator getState() {
+            return new EditorOriginator(this.savedDateTime, this.content);
         }
     }
 }
