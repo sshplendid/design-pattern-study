@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 public class EditorCaretaker {
     private EditorOriginator editorOriginator;
-    private Deque<Memento> history;
+    private Deque<EditorOriginator.EditorMemento> history;
 
     public EditorCaretaker() {
         editorOriginator = new EditorOriginator();
@@ -20,11 +20,11 @@ public class EditorCaretaker {
         pushHistory(editorOriginator.createMemento());
     }
 
-    public void pushHistory(Memento memento) {
+    public void pushHistory(EditorOriginator.EditorMemento memento) {
         history.push(memento);
     }
 
-    public Memento undo() {
+    public EditorOriginator.EditorMemento undo() {
         System.out.println("-> 이전 상태로 원복");
         return history.pop();
     }
